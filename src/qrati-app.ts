@@ -1,7 +1,6 @@
-import { LitElement, html, nothing } from 'lit';
+import { LitElement, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { ORGANIZATION_ID, QRATI_SCRIPT_URL, GITHUB_ORG, REPO } from './config';
-import { loadUser, login, logout, type AuthUser } from './auth';
 
 const repoUrl = `https://github.com/${GITHUB_ORG}/${REPO}`;
 const vscodeUrl = `https://vscode.dev/github/${GITHUB_ORG}/${REPO}`;
@@ -12,11 +11,6 @@ export class QratiApp extends LitElement {
   @state() private theme: 'light' | 'dark' =
     (localStorage.getItem('qc-theme') as 'light' | 'dark') ||
     (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-  @state() private user: AuthUser | null = loadUser();
-  @state() private email = '';
-  @state() private name = '';
-  @state() private loading = false;
-  @state() private error = '';
 
   // Render in light DOM so the global stylesheet and the Qrati Connect
   // web-component styles (injected into <head>) apply normally.
@@ -44,30 +38,6 @@ export class QratiApp extends LitElement {
     localStorage.setItem('qc-theme', this.theme);
   }
 
-  private async handleSubmit(e: Event) {
-    e.preventDefault();
-    if (!this.email.trim() || !this.name.trim()) {
-      this.error = 'Email and name are required.';
-      return;
-    }
-    this.loading = true;
-    this.error = '';
-    try {
-      this.user = await login(this.email.trim(), this.name.trim());
-    } catch {
-      this.error = 'Login failed. Try again.';
-    } finally {
-      this.loading = false;
-    }
-  }
-
-  private handleLogout() {
-    logout();
-    this.user = null;
-    this.email = '';
-    this.name = '';
-  }
-
   render() {
     return html`
       <button class="theme-toggle" @click=${this.toggleTheme} aria-label="Toggle theme">
@@ -85,7 +55,7 @@ export class QratiApp extends LitElement {
               This example shows how to embed
               <a href="https://qrati.com" target="_blank" rel="noopener noreferrer">Qrati</a> Connect into a
               Lit app using the framework-agnostic <strong>web component</strong>, with a host-controlled
-              theme and a demo login for organizations that use custom auth.
+              theme.
             </p>
 
             <div class="action-pills" aria-label="Example links">
@@ -101,43 +71,13 @@ export class QratiApp extends LitElement {
           </header>
 
           <main class="content-shell">
-            ${this.user
-              ? html`
-                  <div class="session-bar">
-                    <span>Signed in as <strong>${this.user.fname} ${this.user.lname}</strong> (${this.user.email})</span>
-                    <button class="btn-ghost" @click=${this.handleLogout}>Log out</button>
-                  </div>
-                  <div class="widget-frame">
-                    <qrati-connect
-                      organization-id=${ORGANIZATION_ID}
-                      uid=${this.user.userId}
-                      fname=${this.user.fname}
-                      lname=${this.user.lname}
-                      theme=${this.theme}
-                      router="hash"
-                    ></qrati-connect>
-                  </div>
-                `
-              : html`
-                  <div class="login-card">
-                    <h2>Demo sign in</h2>
-                    <p class="sub">Identify yourself to load the widget as a known user.</p>
-                    <form class="login-form" @submit=${this.handleSubmit}>
-                      <div class="field">
-                        <label for="name">Full name</label>
-                        <input id="name" type="text" .value=${this.name} @input=${(e: Event) => (this.name = (e.target as HTMLInputElement).value)} placeholder="John Doe" autocomplete="name" />
-                      </div>
-                      <div class="field">
-                        <label for="email">Email</label>
-                        <input id="email" type="email" .value=${this.email} @input=${(e: Event) => (this.email = (e.target as HTMLInputElement).value)} placeholder="john@example.com" autocomplete="email" />
-                      </div>
-                      ${this.error ? html`<p class="error">${this.error}</p>` : nothing}
-                      <button class="btn-primary" type="submit" ?disabled=${this.loading}>
-                        ${this.loading ? 'Signing in…' : 'Sign in & load widget'}
-                      </button>
-                    </form>
-                  </div>
-                `}
+            <div class="widget-frame">
+              <qrati-connect
+                organization-id=${ORGANIZATION_ID}
+                theme=${this.theme}
+                router="hash"
+              ></qrati-connect>
+            </div>
           </main>
 
           <footer class="footer">

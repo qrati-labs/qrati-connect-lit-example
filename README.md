@@ -2,7 +2,7 @@
 
 Embeds [Qrati Connect](https://qrati.com) into a Lit + Vite app using the
 framework-agnostic **web component** integration, with a host-controlled
-light/dark theme and a demo login for organizations that use custom auth.
+light/dark theme.
 
 ## Integration method: Web component
 
@@ -10,10 +10,10 @@ Lit renders custom elements natively, so we load the element bundle from the
 CDN and drop `<qrati-connect>` into the markup:
 
 ```ts
-<qrati-connect organization-id={ORGANIZATION_ID} uid={user.userId} theme={theme} router="hash" />
+<qrati-connect organization-id={ORGANIZATION_ID} theme={theme} router="hash" />
 ```
 
-The bundle (and its styles) are loaded once on mount — see `src/App.lit`.
+The bundle (and its styles) are loaded once on mount — see `src/qrati-app.ts`.
 
 ## Run it
 
@@ -28,16 +28,9 @@ pnpm dev
 Set these in `.env` (all optional; the demo org is used as a fallback):
 
 | Variable                 | Description                                                       |
-| ------------------------ | ----------------------------------------------------------------- |
+| ------------------------ | ------------------------------------------------------------------|
 | `VITE_ORGANIZATION_ID`   | Your Qrati organization ID                                        |
 | `VITE_QRATI_SCRIPT_URL`  | CDN URL of the web-component bundle (`element/web.es.js`)          |
-| `VITE_API_ENDPOINT`      | Demo-login endpoint for custom-auth orgs. Leave empty to skip it. |
-
-## Demo auth
-
-Orgs with custom auth expect a known user. The login form (`src/auth.ts`) derives
-a stable `uid` from the email, optionally POSTs to `VITE_API_ENDPOINT`, then
-renders the widget with `uid` / `fname` / `lname` so the user is recognized.
 
 ## Other integration methods
 

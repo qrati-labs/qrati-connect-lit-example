@@ -1,2 +1,8 @@
+allowBuilds:
+  esbuild: true
+  sharp: true
+  workerd: true
 minimumReleaseAgeExclude:
   - vite@8.1.4
+  - miniflare@4.20260708.0
+  - wrangler@4.109.0
