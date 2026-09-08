@@ -27,15 +27,6 @@ cp .env.example .env   # optional — sensible defaults are baked in
 pnpm dev
 ```
 
-## Configuration
-
-Set these in `.env` (all optional; the demo org is used as a fallback):
-
-| Variable                 | Description                                                       |
-| ------------------------ | ------------------------------------------------------------------|
-| `VITE_ORGANIZATION_ID`   | Your Qrati organization ID                                        |
-| `VITE_QRATI_SCRIPT_URL`  | CDN URL of the web-component bundle (`element/web.es.js`)          |
-
 ## Other integration methods
 
 - **React component** — `import { QratiConnect }` (see the React/Next/Preact examples).
