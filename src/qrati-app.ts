@@ -1,5 +1,6 @@
 import { LitElement, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
+import * as CookieConsent from 'vanilla-cookieconsent';
 import { ORGANIZATION_ID, QRATI_SCRIPT_URL, GITHUB_ORG, REPO } from './config';
 
 const repoUrl = `https://github.com/${GITHUB_ORG}/${REPO}`;
@@ -21,6 +22,8 @@ export class QratiApp extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     document.documentElement.setAttribute('data-theme', this.theme);
+    document.documentElement.classList.toggle('dark', this.theme === 'dark');
+    void CookieConsent.run({ categories: { necessary: { enabled: true, readOnly: true }, analytics: {} }, language: { default: 'en', translations: { en: { consentModal: { title: 'We use cookies', description: 'Essential cookies keep this example working. Analytics cookies are optional.', acceptAllBtn: 'Accept all', acceptNecessaryBtn: 'Reject analytics', showPreferencesBtn: 'Manage preferences' }, preferencesModal: { title: 'Cookie preferences', acceptAllBtn: 'Accept all', acceptNecessaryBtn: 'Reject analytics', savePreferencesBtn: 'Save preferences', closeIconLabel: 'Close', sections: [] } } } } });
 
     const styleUrl = QRATI_SCRIPT_URL.replace(/\/web\.es\.js$/, '/styles.css');
     if (!document.querySelector(`link[href="${styleUrl}"]`)) {
@@ -35,6 +38,7 @@ export class QratiApp extends LitElement {
   private toggleTheme() {
     this.theme = this.theme === 'dark' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', this.theme);
+    document.documentElement.classList.toggle('dark', this.theme === 'dark');
     localStorage.setItem('qc-theme', this.theme);
   }
 
@@ -71,13 +75,16 @@ export class QratiApp extends LitElement {
           </header>
 
           <main class="content-shell">
-            <div class="widget-frame">
+            <section class="widget-frame" aria-label="Interactive Lit Event Gallery"><h2 class="sr-only">Live Event Photo Gallery Component</h2>
               <qrati-connect
                 organization-id=${ORGANIZATION_ID}
                 theme=${this.theme}
                 router="hash"
-              ></qrati-connect>
-            </div>
+              ></qrati-connect></section>
+            <section class="seo-section"><p class="seo-kicker">Event Gallery Features</p><h2>Why Developers Choose Qrati Connect</h2><div class="seo-features-grid"><article class="seo-feature-card"><h3>🖼️ Live Event Photo Wall</h3><p>Responsive masonry gallery and full-screen lightbox.</p></article><article class="seo-feature-card"><h3>📸 Guest Media Uploads</h3><p>QR uploads with compression and HEIC conversion.</p></article><article class="seo-feature-card"><h3>⭐ Reactions &amp; Contests</h3><p>Emoji reactions, ratings, and live rankings.</p></article><article class="seo-feature-card"><h3>⚡ Native Web Component</h3><p>Lit hosts the same framework-agnostic custom element.</p></article></div></section>
+            <section class="seo-section"><p class="seo-kicker">Developer Integration</p><h2>Embed in 3 Simple Steps</h2><pre>pnpm add @qratilabs/qrati-connect — then render &lt;qrati-connect organization-id="your-organization-id" theme="light" router="hash"&gt;.</pre></section>
+            <section class="seo-section"><p class="seo-kicker">Common Questions</p><h2>Frequently Asked Questions</h2><div class="faq-list"><details open><summary>How do I embed an event photo gallery in Lit?</summary><p>Load the element bundle and render the custom element with your organization ID.</p></details><details><summary>Can attendees upload photos?</summary><p>Yes, when uploads are enabled in Qrati.</p></details><details><summary>How does Lit handle theme sync?</summary><p>Lit state updates the custom element theme attribute.</p></details><details><summary>Does it support dark mode?</summary><p>Yes. Set theme to light or dark.</p></details><details><summary>Can I run photo contests?</summary><p>Yes. Rankings, reactions, and ratings are supported.</p></details></div></section>
+            <section class="seo-section seo-cta-section"><h2>Host Your Event on Qrati. <span class="cta-highlight">Stream the Live Gallery on Your Website.</span></h2><p>Set up your event, let attendees upload, then embed the live gallery in your Lit app.</p><a class="btn-cta-primary" href="https://qrati.com">Host Your Event on Qrati →</a></section>
           </main>
 
           <footer class="footer">

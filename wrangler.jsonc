@@ -2,6 +2,7 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "qrati-connect-lit-example",
   "compatibility_date": "2026-07-06",
+  "routes": [{ "pattern": "*qrati.com/connect/lit-example*", "zone_name": "qrati.com" }],
   "observability": {
     "enabled": true
   },

@@ -6,11 +6,12 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "bun run build && wrangler dev",
-    "deploy": "bun run build && wrangler deploy"
+    "preview": "pnpm run build && wrangler dev",
+    "deploy": "pnpm run build && wrangler deploy"
   },
   "dependencies": {
-    "lit": "3.3.3"
+    "lit": "3.3.3",
+    "vanilla-cookieconsent": "3.1.0"
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "1.43.0",
