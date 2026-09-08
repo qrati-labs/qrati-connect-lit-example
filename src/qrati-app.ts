@@ -1,6 +1,6 @@
 import { LitElement, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
-import * as CookieConsent from 'vanilla-cookieconsent';
+import { initCookieConsent } from './lib/cookieConsent';
 import { ORGANIZATION_ID, QRATI_SCRIPT_URL, GITHUB_ORG, REPO } from './config';
 
 const repoUrl = `https://github.com/${GITHUB_ORG}/${REPO}`;
@@ -23,7 +23,7 @@ export class QratiApp extends LitElement {
     super.connectedCallback();
     document.documentElement.setAttribute('data-theme', this.theme);
     document.documentElement.classList.toggle('dark', this.theme === 'dark');
-    void CookieConsent.run({ categories: { necessary: { enabled: true, readOnly: true }, analytics: {} }, language: { default: 'en', translations: { en: { consentModal: { title: 'We use cookies', description: 'Essential cookies keep this example working. Analytics cookies are optional.', acceptAllBtn: 'Accept all', acceptNecessaryBtn: 'Reject analytics', showPreferencesBtn: 'Manage preferences' }, preferencesModal: { title: 'Cookie preferences', acceptAllBtn: 'Accept all', acceptNecessaryBtn: 'Reject analytics', savePreferencesBtn: 'Save preferences', closeIconLabel: 'Close', sections: [] } } } } });
+    initCookieConsent();
 
     const styleUrl = QRATI_SCRIPT_URL.replace(/\/web\.es\.js$/, '/styles.css');
     if (!document.querySelector(`link[href="${styleUrl}"]`)) {
