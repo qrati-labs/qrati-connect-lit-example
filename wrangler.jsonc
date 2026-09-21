@@ -1,12 +1,15 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "qrati-connect-lit-example",
+  "main": "src/worker.ts",
   "compatibility_date": "2026-07-06",
   "routes": [{ "pattern": "*qrati.com/connect/lit-example*", "zone_name": "qrati.com" }],
   "observability": {
     "enabled": true
   },
   "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
     "not_found_handling": "single-page-application"
   },
   "compatibility_flags": [

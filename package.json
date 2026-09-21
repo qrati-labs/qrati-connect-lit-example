@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "pnpm run build && wrangler dev",
-    "deploy": "pnpm run build && wrangler deploy"
+    "preview": "pnpm run build && wrangler dev --config dist/qrati_connect_lit_example/wrangler.json",
+    "deploy": "pnpm run build && wrangler deploy --config dist/qrati_connect_lit_example/wrangler.json"
   },
   "dependencies": {
     "lit": "3.3.3",
